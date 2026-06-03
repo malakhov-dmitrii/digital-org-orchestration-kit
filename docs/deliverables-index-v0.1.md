@@ -21,6 +21,7 @@ specs:
   linear_reconciliation_rules: outputs/linear-reconciliation-rules-v0.1.md
   gastown_inspiration_notes: outputs/gastown-inspiration-notes-v0.1.md
   gastown_pattern_implementation_roadmap: outputs/gastown-pattern-implementation-roadmap-v0.1.md
+  paperclip_control_plane_integration: outputs/paperclip-control-plane-integration-brief-v0.1.md
   no_magic_review_portable_kit: outputs/no-magic-review-portable-kit-v0.1.md
   domain_orgops: outputs/domain-pack-orgops-v0.1.md
   domain_development: outputs/domain-pack-development-v0.1.md
@@ -100,4 +101,11 @@ next_gates:
     requires:
       - cleanup_dedup_spec
       - milestone_update_policy
+  paperclip_adapter:
+    requires:
+      - local_paperclip_sandbox_capability_check
+      - codex_thread_identity_round_trip
+      - single_lease_atomic_checkout_proof
+      - evidence_review_verification_uat_round_trip
+      - dual_authority_audit_before_linear_sync
 ```

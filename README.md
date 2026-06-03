@@ -1,10 +1,10 @@
-# Digital Org Orchestration Kit
+# Digital org orchestration kit
 
 Run a small team of AI agents without losing track of who owns what.
 
 The package inventory is defined in `manifest.json`. The main workflow is described in `docs/thread-first-project-workflow-v0.1.md`.
 
-It is not a SaaS product and it is not a runtime. It is a set of docs, local skills, templates, validators, and a tutorial pilot.
+The repo contains docs, local skills, templates, validators, and a tutorial pilot.
 
 ## Why this exists
 
@@ -125,6 +125,13 @@ templates/fallback-task-board.yaml
 ```
 
 The orchestrator skill sets `chat_is_durable_state: false` in `skills/digital-org-orchestrator/SKILL.md`.
+
+## Paperclip control plane option
+
+The Paperclip adapter decision brief is in
+`docs/paperclip-control-plane-integration-brief-v0.1.md`. It keeps this kit as
+the operating pack and treats Paperclip as a candidate control plane until a
+local compatibility spike passes.
 
 ## Watchdogs and heartbeats
 
