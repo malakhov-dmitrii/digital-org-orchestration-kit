@@ -1,144 +1,178 @@
-# Digital org orchestration kit
+# Digital Org Orchestration Kit
 
-```yaml
-kit_version: v0.1
-generated_at: 2026-06-03T13:07:35+02:00
-primary_surface: Linear
-fallback_surface: local_task_board
-organizational_agent_surface: Codex_thread
-subagent_surface: secondary_internal_tool
-```
+Run a small team of AI agents without losing track of who owns what.
 
-## Quick start
+The package inventory is defined in `manifest.json`. The main workflow is described in `docs/thread-first-project-workflow-v0.1.md`.
 
-1. Install or copy the folders under `skills/` into `~/.codex/skills/`.
-2. Start a new Codex chat with `digital-org-project-activation`.
-3. Pick an activation mode from `docs/portable-project-activation-kit-v0.1.md`.
-4. Create or select the Linear project/control issue using `docs/project-setup-and-linear-template-v0.1.md`.
-5. Choose a short project prefix and thread title pattern from `docs/thread-naming-convention-v0.1.md`.
-6. Complete intake, setup, discovery, research, source-of-truth map, and kickoff before assigning worker threads.
-7. Keep task state in Linear or the fallback task board. Do not rely on chat history as durable state.
+It is not a SaaS product and it is not a runtime. It is a set of docs, local skills, templates, validators, and a tutorial pilot.
 
-Skill install dry-run:
+## Why this exists
 
-```bash
-node scripts/install-skills.mjs
-```
+Once you have more than one AI agent working on a project, chat history stops being enough.
 
-Skill install write mode:
+You need answers to basic operational questions:
 
-```bash
-node scripts/install-skills.mjs --write
-```
+- What is the goal?
+- Which tasks exist?
+- Which agent thread owns each task?
+- Is the lease still alive?
+- What is blocked by the user, another agent, credentials, or runtime ownership?
+- What evidence proves the work is done?
+- Who reviewed and verified it?
+- What happens if a worker chat stops?
 
-## Directory layout
+The workflow in `docs/thread-first-project-workflow-v0.1.md` turns those questions into project stages and handoff rules.
 
-```yaml
-layout:
-  docs: canonical_specs_and_templates
-  skills: installable_codex_skills
-  scripts: local_helper_scripts
-  validators: local_validation_scripts
-  templates: copy_ready_linear_thread_and_board_templates
-  linear: reserved_for_linear_payloads_or_snapshots
-  examples: safe_pilots_and_reference_runs
-```
+## Core idea
 
-## Required reading order
+Use real Codex threads as durable role owners:
 
-```yaml
-read_order:
-  - docs/portable-project-activation-kit-v0.1.md
-  - docs/thread-first-project-workflow-v0.1.md
-  - docs/project-onboarding-discovery-kickoff-v0.1.md
-  - docs/project-setup-and-linear-template-v0.1.md
-  - docs/templates-and-checklists-v0.1.md
-  - docs/control-loops-heartbeats-watchdogs-v0.1.md
-  - docs/thread-naming-convention-v0.1.md
-  - docs/linear-reconciliation-rules-v0.1.md
-  - docs/authority-and-evidence-contracts-v0.1.md
-  - docs/gastown-pattern-implementation-roadmap-v0.1.md
-```
+- orchestrator
+- worker
+- reviewer
+- verifier
+- watchdog
+- auditor
 
-## Thread-first invariant
+The repo's operating contract sets `organizational_agent_surface: Codex_thread` and `subagent_surface: secondary_internal_tool` in `manifest.json`. The lease rules live in `docs/canonical-task-schema-and-stage-machine-v0.1.md`.
 
-```yaml
-thread_first:
-  chief_orchestrator: Codex_thread
-  project_orchestrator: Codex_thread
-  feature_or_unit_orchestrator: Codex_thread
-  worker: Codex_thread
-  reviewer: Codex_thread
-  verifier: Codex_thread
-  auditor: Codex_thread
-  subagent_role: bounded_secondary_tool
-  subagent_can_hold_lease: false
-  subagent_can_be_runtime_owner: false
-  subagent_can_accept_uat: false
-  role_thread_title_required: true
-  active_lease_holder_thread_id_must_equal_current_thread_id: true
-```
-
-## Role thread title rule
-
-Every worker, reviewer, verifier, watchdog, auditor, and non-root orchestrator thread must be titled before or immediately after assignment:
+Every role thread gets a readable title:
 
 ```text
 <PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>
 ```
 
-Example: `DOP-TUT TUT-001 Worker release note`.
+Example:
 
-The task pool or control issue must record `thread_id`, `thread_title`, `project_prefix`, `task_id`, `role`, and `short_scope`.
-
-## Minimum safe activation
-
-```yaml
-minimum_safe_activation:
-  required:
-    - project_goal
-    - source_of_truth_map
-    - task_pool_location
-    - authority_profile
-    - thread_registry
-    - lease_ttl_policy
-    - blocker_routing_policy
-    - evidence_contract
-    - digest_surface
-  worker_count_before_watchdog: 1
-  worker_count_after_watchdog: 3
+```text
+DOP-TUT TUT-001 Worker release note
 ```
 
-## Validation
+That rule is documented in `docs/thread-naming-convention-v0.1.md`; the tutorial pilot also records named role threads in `examples/tutorial-pilot/pilot-report.md`.
 
-Run:
+## What is included
+
+- `skills/` - installable local Codex skills for orchestrator, worker, reviewer, verifier, auditor, and domain packs.
+- `templates/` - kickoff prompts, task records, control records, watchdog digests, final reports.
+- `docs/` - the operating model, stage machine, Linear/fallback board rules, authority model, evidence contract, watchdog policy, and onboarding flow.
+- `examples/tutorial-pilot/` - a safe synthetic pilot showing the full loop with worker, review, verification, watchdog, and audit artifacts.
+- `validators/` - a small local validator that checks package completeness and key invariants.
+
+## Quick start
+
+Clone the repo:
+
+```bash
+git clone https://github.com/malakhov-dmitrii/digital-org-orchestration-kit.git
+cd digital-org-orchestration-kit
+```
+
+Check the package:
 
 ```bash
 node validators/validate-kit.mjs
-node validators/validate-kit.mjs
 ```
 
-The first script checks package completeness. The second script checks the current Linear reconciliation fixture from this pilot.
+If you use local Codex skills, preview the install:
 
-## Public release note
-
-See `PUBLICATION.md` for the public export note. This export removes or replaces local paths, real thread ids, and project-specific live fixtures before publication.
-
-## Known open gates
-
-```yaml
-open_gates:
-  real_codex_thread_pilot: completed_local_synthetic
-  linear_project_update_backend: degraded_or_ui_only
-  memory_hygiene_spec: not_completed
-  production_runtime_policy: profile_gated
+```bash
+node scripts/install-skills.mjs
 ```
+
+Install the skills:
+
+```bash
+node scripts/install-skills.mjs --write
+```
+
+Then start a new Codex chat and invoke:
+
+```text
+digital-org-project-activation
+```
+
+Use that first chat as the project orchestrator. It should set up the goal, source-of-truth map, authority profile, task pool, thread registry, lease policy, and watchdog baseline before assigning workers.
+
+## Minimal workflow
+
+Start with the activation flow in `docs/portable-project-activation-kit-v0.1.md` and `docs/thread-first-project-workflow-v0.1.md`:
+
+1. Define the project goal and non-goals.
+2. Pick a source of truth: Linear project/issues, or the fallback task board file.
+3. Write the source-of-truth map: repo, runtime, DB, task state, user decisions, evidence.
+4. Create small tasks with clear acceptance criteria.
+5. Spawn or assign one worker thread per task.
+6. Record a lease: thread id, title, task id, scope, TTL, allowed and forbidden actions.
+7. Require evidence before review.
+8. Review the worker output.
+9. Verify the claim independently.
+10. Run watchdog checks for stale leases, orphaned work, blockers, and loops.
+11. Write a compact report and archive or shut down role threads cleanly.
+
+## Linear or fallback board
+
+The preferred durable task pool is Linear:
+
+- projects for project boundaries;
+- issues for tasks;
+- labels for domains, blockers, leases, and risk;
+- comments or structured blocks for evidence and handoff.
+
+If Linear is not available, the repo includes a fallback board format in:
+
+```text
+templates/fallback-task-board.yaml
+```
+
+The orchestrator skill sets `chat_is_durable_state: false` in `skills/digital-org-orchestrator/SKILL.md`.
+
+## Watchdogs and heartbeats
+
+The kit defines worker, orchestrator, and watchdog heartbeat lanes. A watchdog should regularly check:
+
+- active tasks without workers;
+- active workers without valid tasks;
+- stale leases;
+- task/registry/control divergence;
+- repeated activity without material progress;
+- user questions mixed with peer/runtime blockers;
+- verification-ready work without a verifier.
+
+The tutorial pilot records one watchdog pass. See `examples/tutorial-pilot/audit/post-pilot-system-audit.md` for the post-pilot heartbeat audit.
 
 ## Tutorial pilot
 
-The safe synthetic tutorial pilot is under `examples/tutorial-pilot/`. It used separate Codex threads for worker, watchdog, reviewer, verifier, and auditor roles. The pilot made no Linear writes, public actions, runtime actions, or changes outside the example folder.
+Start here if you want to see what the system looks like after a run:
 
-```yaml
-worker_count_gate:
-  max_before_registry_ttl_orphan_digest_validation: 1
+```text
+examples/tutorial-pilot/pilot-report.md
 ```
+
+The pilot scope is declared in `examples/tutorial-pilot/README.md`.
+
+## Public export note
+
+See `PUBLICATION.md` for the public export note.
+
+## Current limits
+
+- Package inventory: see `manifest.json`.
+- Linear project update status: see `examples/tutorial-pilot/pilot-report.md`.
+- Heartbeat automation status: see `examples/tutorial-pilot/audit/post-pilot-system-audit.md`.
+- Authority gates: see `docs/authority-and-evidence-contracts-v0.1.md`.
+- Memory hygiene status: see `docs/deliverables-index-v0.1.md`.
+
+## Good first customization
+
+For a real project, start by changing:
+
+- project prefix;
+- Linear project or fallback board path;
+- authority profile;
+- domain pack;
+- worker TTL;
+- watchdog cadence;
+- evidence requirements;
+- final report format.
+
+Keep the thread-first rule intact: real work ownership belongs to a named Codex thread with a lease and evidence.
