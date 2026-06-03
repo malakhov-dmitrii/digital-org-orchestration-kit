@@ -2,7 +2,7 @@ Use digital-org-verifier.
 
 Source thread id: <parent/orchestrator thread id, read-only provenance>
 Current thread id: <this verifier Codex thread id>
-Required thread title: <PROJECT_PREFIX> <TASK_ID_OR_SCOPE> Verifier <SHORT_SCOPE>
+Required thread title: <TASK_ID_OR_SCOPE> Verifier <SHORT_SCOPE>
 Claim to verify: <claim>
 Canonical task record: <task id/path>
 Evidence provided: <evidence pointers>

@@ -22,7 +22,8 @@ grounding:
 ```yaml
 verification_checklist:
   - confirm_worker_reviewer_verifier_or_auditor_is_a_codex_thread_when_it_claims_durable_ownership
-  - confirm_role_thread_title_matches_project_prefix_task_role_scope
+  - confirm_role_thread_title_matches_task_id_role_scope
+  - confirm_project_prefix_is_max_3_chars_and_embedded_in_task_id
   - confirm_source_thread_id_is_not_used_as_role_thread_or_lease_holder
   - confirm_holder_thread_id_equals_current_thread_id_when_lease_active
   - classify_subagent_output_as_secondary_not_canonical

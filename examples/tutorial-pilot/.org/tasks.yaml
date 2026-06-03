@@ -13,40 +13,40 @@ source_of_truth:
 thread_registry:
   - role: worker
     thread_id: thread-tut-worker-001
-    thread_title: DOP-TUT TUT-001 Worker release note
-    project_prefix: DOP-TUT
+    thread_title: TUT-001 Worker release note
+    project_prefix: TUT
     task_id: TUT-001
     lease_state: released
     heartbeat_due_at:
     notes: handed_off_ready_for_review_at_2026-06-03T10:54:03Z
   - role: watchdog
     thread_id: thread-tut-watchdog-004
-    thread_title: DOP-TUT TUT-004 Watchdog scan
-    project_prefix: DOP-TUT
+    thread_title: TUT-004 Watchdog scan
+    project_prefix: TUT
     task_id: TUT-004
     lease_state: released
     heartbeat_due_at:
     notes: watchdog_digest_complete_released_by_orchestrator
   - role: reviewer
     thread_id: thread-tut-reviewer-002
-    thread_title: DOP-TUT TUT-002 Reviewer release note
-    project_prefix: DOP-TUT
+    thread_title: TUT-002 Reviewer release note
+    project_prefix: TUT
     task_id: TUT-002
     lease_state: released
     heartbeat_due_at:
     notes: review_pass_ready_for_verification_at_2026-06-03T10:55:42Z
   - role: verifier
     thread_id: thread-tut-verifier-003
-    thread_title: DOP-TUT TUT-003 Verifier pilot claims
-    project_prefix: DOP-TUT
+    thread_title: TUT-003 Verifier pilot claims
+    project_prefix: TUT
     task_id: TUT-003
     lease_state: released
     heartbeat_due_at:
     notes: verification_complete_released_by_orchestrator
   - role: auditor
     thread_id: thread-tut-auditor-005
-    thread_title: DOP-TUT TUT-005 Auditor retrospective
-    project_prefix: DOP-TUT
+    thread_title: TUT-005 Auditor retrospective
+    project_prefix: TUT
     task_id: TUT-005
     lease_state: released
     heartbeat_due_at:

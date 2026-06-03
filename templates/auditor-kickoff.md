@@ -2,7 +2,7 @@ Use digital-org-auditor.
 
 Source thread id: <parent/orchestrator thread id, read-only provenance>
 Current thread id: <this watchdog/auditor Codex thread id>
-Required thread title: <PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <Watchdog|Auditor> <SHORT_SCOPE>
+Required thread title: <TASK_ID_OR_SCOPE> <Watchdog|Auditor> <SHORT_SCOPE>
 Audit mode: <watchdog_scan|retrospective_audit|milestone_audit|incident_audit>
 Task pool: <Linear project/control issue/fallback board path>
 Control record: <control issue/path>

@@ -25,7 +25,7 @@ Read the task goal, scope, out-of-scope, stage/status, lease, autonomy profile, 
 - Scope match and out-of-scope violations.
 - Forbidden actions or authority drift.
 - Thread ownership: a real worker/reviewer/verifier/auditor must be a Codex thread, not only a subagent.
-- Thread naming: role threads must have a title matching `<PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>`.
+- Thread naming: role threads must have a title matching `<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>`, where the task id starts with a 1-3 character project prefix.
 - Thread identity: `source_thread_id` is parent provenance; active `holder_thread_id` must equal the role thread's `current_thread_id`.
 - Subagent output can be considered secondary evidence, not durable task ownership.
 - Linear reconciliation: workflow status is canonical status only; canonical stage is in the structured state block.

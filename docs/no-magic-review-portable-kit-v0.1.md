@@ -99,7 +99,7 @@ risks:
     control: source_thread_id_is_parent_provenance_current_thread_id_is_role_thread
     remaining_gap: validator_should_reject_active_lease_when_holder_thread_id_differs_from_current_thread_id
   missing_or_generic_thread_title:
-    control: required_title_pattern_PROJECT_PREFIX_TASK_ROLE_SCOPE
+    control: required_title_pattern_TASK_ID_ROLE_SCOPE_with_project_prefix_embedded_in_task_id
     remaining_gap: thread_tool_availability_must_be_recorded_when_title_cannot_be_set
   status_stage_conflation:
     control: Linear_status_is_status_only_stage_in_structured_block

@@ -7,7 +7,7 @@ Authority: no Linear writes, public actions, runtime actions, or edits outside `
 ## System health
 
 - Evidence reviewed: `evidence/TUT-001-worker-evidence.md`, `evidence/TUT-002-review.md`, `evidence/TUT-003-verification.md`, and `watchdog/watchdog-digest.md`.
-- Thread naming uses task ids, roles, and the `DOP-TUT` prefix in `.org/tasks.yaml` and `.org/control.md`.
+- Thread naming uses task ids and roles. Evidence source: `.org/tasks.yaml` records `project_prefix: TUT` and task ids such as `TUT-001`.
 - Registry reconciliation gap observed during the run: `TUT-003` task lease was released in `.org/tasks.yaml` while the thread registry and `.org/control.md` still showed the verifier lease as active. The orchestrator reconciled those surfaces after the auditor handoff.
 
 ## Top bottlenecks

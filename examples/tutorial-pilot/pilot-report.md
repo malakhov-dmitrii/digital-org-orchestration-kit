@@ -2,7 +2,7 @@
 
 ```yaml
 pilot_id: digital-org/tutorial-pilot/2026-06-03
-project_prefix: DOP-TUT
+project_prefix: TUT
 task_pool: examples/tutorial-pilot/.org/tasks.yaml
 control_record: examples/tutorial-pilot/.org/control.md
 authority_profile: local_files_only
@@ -19,11 +19,11 @@ Prove the portable digital-org kit on a safe synthetic project using real Codex 
 
 | role | task | thread id | title | lease |
 | --- | --- | --- | --- | --- |
-| worker | TUT-001 | thread-tut-worker-001 | DOP-TUT TUT-001 Worker release note | released |
-| watchdog | TUT-004 | thread-tut-watchdog-004 | DOP-TUT TUT-004 Watchdog scan | released |
-| reviewer | TUT-002 | thread-tut-reviewer-002 | DOP-TUT TUT-002 Reviewer release note | released |
-| verifier | TUT-003 | thread-tut-verifier-003 | DOP-TUT TUT-003 Verifier pilot claims | released |
-| auditor | TUT-005 | thread-tut-auditor-005 | DOP-TUT TUT-005 Auditor retrospective | released |
+| worker | TUT-001 | thread-tut-worker-001 | TUT-001 Worker release note | released |
+| watchdog | TUT-004 | thread-tut-watchdog-004 | TUT-004 Watchdog scan | released |
+| reviewer | TUT-002 | thread-tut-reviewer-002 | TUT-002 Reviewer release note | released |
+| verifier | TUT-003 | thread-tut-verifier-003 | TUT-003 Verifier pilot claims | released |
+| auditor | TUT-005 | thread-tut-auditor-005 | TUT-005 Auditor retrospective | released |
 
 ## Artifacts
 

@@ -88,7 +88,9 @@ thread_first:
   subagent_can_accept_uat: false
   real_worker_requires_thread_id: true
   role_thread_title_required: true
-  title_pattern: "<PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
+  title_pattern: "<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
+  project_prefix_max_chars: 3
+  task_id_must_start_with_project_prefix: true
 ```
 
 Do not call a subagent run a worker, reviewer, verifier, or auditor pilot. Label it as a secondary validation pass.
@@ -114,7 +116,7 @@ setup_outputs:
   - first_task_slices
 ```
 
-Thread registry entries must include `thread_id`, `thread_title`, `project_prefix`, `task_id_or_scope`, `role`, and `short_scope`. Role kickoff prompts must distinguish `source_thread_id` from `current_thread_id`; active `holder_thread_id` must equal `current_thread_id`.
+Thread registry entries must include `thread_id`, `thread_title`, `project_prefix`, `task_id_or_scope`, `role`, and `short_scope`. Keep `project_prefix` to 1-3 characters and embed it in the task id. Role kickoff prompts must distinguish `source_thread_id` from `current_thread_id`; active `holder_thread_id` must equal `current_thread_id`.
 
 ## source of truth map
 

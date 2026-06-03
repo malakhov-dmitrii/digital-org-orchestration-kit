@@ -39,16 +39,16 @@ The repo's operating contract sets `organizational_agent_surface: Codex_thread` 
 Every role thread gets a readable title:
 
 ```text
-<PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>
+<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>
 ```
 
 Example:
 
 ```text
-DOP-TUT TUT-001 Worker release note
+TUT-001 Worker release note
 ```
 
-That rule is documented in `docs/thread-naming-convention-v0.1.md`; the tutorial pilot also records named role threads in `examples/tutorial-pilot/pilot-report.md`.
+The task id includes the project prefix. Keep that prefix to 1-3 characters, for example `TUT-001`. The rule is documented in `docs/thread-naming-convention-v0.1.md`; the tutorial pilot also records named role threads in `examples/tutorial-pilot/pilot-report.md`.
 
 ## What is included
 

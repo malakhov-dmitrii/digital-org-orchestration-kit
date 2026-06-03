@@ -16,19 +16,20 @@ applies_to:
 Every organizational Codex thread must be titled before or immediately after assignment.
 
 ```yaml
-title_pattern: "<PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
+title_pattern: "<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
 examples:
-  - "DOP-TUT TUT-001 Worker release note"
-  - "DOP-TUT TUT-002 Reviewer release note"
-  - "DOP-TUT TUT-004 Watchdog scan"
+  - "TUT-001 Worker release note"
+  - "TUT-002 Reviewer release note"
+  - "TUT-004 Watchdog scan"
 ```
 
 ## required fields
 
 ```yaml
 required_title_fields:
-  project_prefix: short_stable_project_code
+  project_prefix: short_stable_project_code_max_3_chars
   task_id_or_scope: task_id_when_available_else_scope
+  task_id_rule: task_id_must_start_with_project_prefix
   role:
     - Orchestrator
     - Worker
@@ -82,7 +83,8 @@ Role threads may rename or update metadata only for `current_thread_id`. They mu
 
 ```yaml
 before_work_assignment_requires:
-  - project_prefix_selected
+  - project_prefix_selected_max_3_chars
+  - task_id_starts_with_project_prefix
   - thread_title_matches_pattern
   - thread_registry_entry_created_or_updated
   - current_thread_id_recorded
@@ -96,7 +98,8 @@ If the title cannot be set by tool, record the intended title in the task pool a
 ```yaml
 title_hygiene:
   keep_under_80_chars: true
-  use_short_project_prefix: true
+  use_short_project_prefix_max_3_chars: true
+  do_not_duplicate_project_prefix_outside_task_id: true
   prefer_task_id_when_available: true
   avoid_generic_titles:
     - Worker

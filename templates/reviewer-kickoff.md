@@ -2,7 +2,7 @@ Use digital-org-reviewer.
 
 Source thread id: <parent/orchestrator thread id, read-only provenance>
 Current thread id: <this reviewer Codex thread id>
-Required thread title: <PROJECT_PREFIX> <TASK_ID_OR_SCOPE> Reviewer <SHORT_SCOPE>
+Required thread title: <TASK_ID_OR_SCOPE> Reviewer <SHORT_SCOPE>
 Review target: <task id/artifact>
 Review scope: correctness, scope control, evidence adequacy, regressions, missing tests.
 Task pool: <Linear project/control issue/fallback board path>

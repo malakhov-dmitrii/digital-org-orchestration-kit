@@ -23,11 +23,12 @@ operating_model:
 
 ```yaml
 thread_title_required: true
-title_pattern: "<PROJECT_PREFIX> <TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
+title_pattern: "<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
+project_prefix_rule: max_3_chars_and_embedded_in_task_id
 examples:
-  - "DOP-TUT TUT-001 Worker release note"
-  - "DOP-TUT TUT-002 Reviewer release note"
-  - "DOP-TUT TUT-004 Watchdog scan"
+  - "TUT-001 Worker release note"
+  - "TUT-002 Reviewer release note"
+  - "TUT-004 Watchdog scan"
 orchestrator_rule:
   - rename_thread_before_or_immediately_after_assignment
   - record_thread_title_in_registry

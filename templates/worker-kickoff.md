@@ -2,7 +2,7 @@ Use digital-org-worker.
 
 Source thread id: <parent/orchestrator thread id, read-only provenance>
 Current thread id: <this worker Codex thread id>
-Required thread title: <PROJECT_PREFIX> <TASK_ID_OR_SCOPE> Worker <SHORT_SCOPE>
+Required thread title: <TASK_ID_OR_SCOPE> Worker <SHORT_SCOPE>
 Task pool: <Linear project/control issue/fallback board path>
 Task: <task id/title>
 Lease holder: current_thread_id only
