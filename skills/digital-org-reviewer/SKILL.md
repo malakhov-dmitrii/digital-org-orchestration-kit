@@ -24,11 +24,11 @@ Read the task goal, scope, out-of-scope, stage/status, lease, autonomy profile, 
 
 - Scope match and out-of-scope violations.
 - Forbidden actions or authority drift.
-- Thread ownership: a real worker/reviewer/verifier/auditor must be a Codex thread, not only a subagent.
-- Thread naming: role threads must have a title matching `<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>`, where the task id starts with a 1-3 character project prefix.
-- Thread identity: `source_thread_id` is parent provenance; active `holder_thread_id` must equal the role thread's `current_thread_id`.
+- Paperclip ownership: a real worker/reviewer/verifier/auditor must be a Paperclip agent run, not only a Codex provider session or subagent.
+- Role naming: Paperclip issue titles and role agent names must carry the project prefix and readable scope, where the task id starts with a 1-3 character project prefix.
+- Run identity: active lease must match the Paperclip checkout or live heartbeat run; provider session ids are evidence pointers, not lease holders.
 - Subagent output can be considered secondary evidence, not durable task ownership.
-- Linear reconciliation: workflow status is canonical status only; canonical stage is in the structured state block.
+- Paperclip/Linear reconciliation: Paperclip is canonical in Paperclip-native mode; Linear is mirror or external status only unless Paperclip is unavailable.
 - Blocker routing: `Questions` only for user/authority input, not peer/runtime/stale blockers.
 - Lease routing: `Deferred` must not keep an active lease.
 - Gate routing: review, QA, verification, and UAT each have one canonical surface.
@@ -67,6 +67,6 @@ Findings:
 Evidence checked:
 Missing evidence:
 Scope/authority issues:
-Thread identity/title issues:
+Agent/run identity issues:
 Next action:
 ```

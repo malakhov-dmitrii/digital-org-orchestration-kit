@@ -205,6 +205,67 @@ for (const requiredText of [
   }
 }
 
+const workerSkill = fs.readFileSync(
+  path.join(root, 'skills/digital-org-worker/SKILL.md'),
+  'utf8',
+);
+
+for (const requiredText of [
+  'organizational_agent_surface: Paperclip_agent_run',
+  'this_worker_must_be_a_paperclip_agent_run_for_active_lease: true',
+  'provider_session_cannot_hold_lease: true',
+  'active_lease_equals_current_paperclip_run',
+]) {
+  if (!workerSkill.includes(requiredText)) {
+    errors.push(`worker skill missing invariant: ${requiredText}`);
+  }
+}
+
+const reviewerSkill = fs.readFileSync(
+  path.join(root, 'skills/digital-org-reviewer/SKILL.md'),
+  'utf8',
+);
+
+for (const requiredText of [
+  'Paperclip ownership',
+  'provider session ids are evidence pointers, not lease holders',
+  'Paperclip is canonical in Paperclip-native mode',
+]) {
+  if (!reviewerSkill.includes(requiredText)) {
+    errors.push(`reviewer skill missing invariant: ${requiredText}`);
+  }
+}
+
+const verifierSkill = fs.readFileSync(
+  path.join(root, 'skills/digital-org-verifier/SKILL.md'),
+  'utf8',
+);
+
+for (const requiredText of [
+  'confirm_worker_reviewer_verifier_or_auditor_is_a_paperclip_agent_run',
+  'confirm_provider_session_id_is_not_used_as_role_owner_or_lease_holder',
+  'paperclip_native_reconciliation_rules_pass',
+]) {
+  if (!verifierSkill.includes(requiredText)) {
+    errors.push(`verifier skill missing invariant: ${requiredText}`);
+  }
+}
+
+const auditorSkill = fs.readFileSync(
+  path.join(root, 'skills/digital-org-auditor/SKILL.md'),
+  'utf8',
+);
+
+for (const requiredText of [
+  'active_paperclip_issue_has_checkout_or_live_run_or_orphan_marker',
+  'provider_session_id_is_not_used_as_durable_role_owner',
+  'issue_checkout_live_run_agent_registry_and_control_record_agree',
+]) {
+  if (!auditorSkill.includes(requiredText)) {
+    errors.push(`auditor skill missing invariant: ${requiredText}`);
+  }
+}
+
 const namingDoc = fs.readFileSync(
   path.join(root, 'docs/thread-naming-convention-v0.1.md'),
   'utf8',

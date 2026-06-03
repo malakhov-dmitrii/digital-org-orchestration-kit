@@ -1,6 +1,6 @@
 ---
 name: digital-org-worker
-description: "Use when executing one leased task from a digital organization task pool; covers scoped work, Linear/fallback task records, authority checks, evidence, blockers, heartbeat, and handoff to reviewer/verifier/orchestrator."
+description: "Use when executing one leased task from a digital organization task pool; covers scoped work, Paperclip issue/run state, authority checks, evidence, blockers, heartbeat, and handoff to reviewer/verifier/orchestrator."
 ---
 
 # Digital org worker
@@ -22,12 +22,12 @@ role:
 
 ```yaml
 start_checklist:
-  - read_task_record_from_linear_or_fallback
+  - read_task_record_from_paperclip_issue_or_fallback
   - confirm_task_id_project_domain_role_stage_status
-  - confirm_current_thread_id_and_required_thread_title
-  - confirm_source_thread_id_is_parent_provenance_only
-  - confirm_lease_holder_scope_ttl_heartbeat_allowed_forbidden_actions
-  - confirm_holder_thread_id_equals_current_thread_id_when_lease_active
+  - confirm_paperclip_agent_id_issue_id_and_run_id
+  - confirm_provider_session_is_evidence_not_lease_holder
+  - confirm_checkout_or_live_run_holder_scope_ttl_heartbeat_allowed_forbidden_actions
+  - confirm_active_lease_equals_current_paperclip_run_when_lease_active
   - confirm_autonomy_profile_and_authority_grants
   - confirm_acceptance_criteria_and_required_evidence
   - load_relevant_domain_pack
@@ -37,13 +37,15 @@ missing_required_field_policy:
   if_unrecoverable: create_blocker_with_owner_and_next_action
 ```
 
-## Linear state rules
+## Paperclip state rules
 
 ```yaml
-linear_state_rules:
-  organizational_agent_surface: Codex_thread
-  this_worker_must_be_a_codex_thread_for_active_lease: true
-  role_thread_title_required: true
+paperclip_state_rules:
+  organizational_agent_surface: Paperclip_agent_run
+  runtime_provider_surface: Codex_local
+  this_worker_must_be_a_paperclip_agent_run_for_active_lease: true
+  provider_session_cannot_hold_lease: true
+  role_agent_name_required: true
   subagent_cannot_hold_lease: true
   subagent_evidence_role: secondary_not_canonical
   workflow_status_is_canonical_status_only: true
@@ -67,6 +69,7 @@ linear_state_rules:
     - lease_released_stale_superseded_or_canceled
   structured_block_safety:
     raw_linear_issue_keys_inside_html_comments: forbidden
+  linear_role: optional_mirror_or_external_status_not_canonical
 ```
 
 ## execution rules
@@ -74,10 +77,10 @@ linear_state_rules:
 ```yaml
 execution_rules:
   work_only_inside_lease_scope: true
-  manage_only_current_thread_id_metadata: true
-  source_thread_id_is_read_only_provenance: true
+  manage_only_current_paperclip_issue_and_run_metadata: true
+  provider_session_id_is_read_only_evidence: true
   update_task_evidence_not_only_chat: true
-  keep_heartbeat_current: true
+  keep_paperclip_heartbeat_current: true
   missing_authority: denied
   while_waiting_for_user_approval: continue_non_authority_work_only
   user_silence_means_approval: false
@@ -119,7 +122,7 @@ handoff_before_stopping:
   - release_extend_or_mark_lease_stale
   - document_runtime_state_if_touched
   - mark_ready_for_review_or_verification_only_when_evidence_attached
-  - keep_task_lease_thread_registry_and_control_record_consistent
+  - keep_issue_checkout_live_run_and_agent_registry_consistent
   - if_tool_degraded_record_failure_and_fallback_used
   - if_looping_write_gap_and_smallest_next_action_before_stopping
 ```

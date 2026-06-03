@@ -16,12 +16,12 @@ watchdog_mode:
     - leases_may_be_stale
     - work_may_be_looping_or_drifting_from_goal
   checks:
-    - active_task_has_worker_or_orphan_marker
-    - active_worker_has_valid_task
-    - role_threads_have_readable_project_task_role_titles
-    - source_thread_id_is_not_used_as_current_role_thread
-    - active_lease_holder_thread_id_equals_current_thread_id
-    - task_lease_thread_registry_and_control_record_agree
+    - active_paperclip_issue_has_checkout_or_live_run_or_orphan_marker
+    - active_worker_agent_run_has_valid_issue
+    - role_agents_have_readable_project_task_role_names
+    - provider_session_id_is_not_used_as_durable_role_owner
+    - active_lease_holder_matches_paperclip_checkout_or_live_run
+    - issue_checkout_live_run_agent_registry_and_control_record_agree
     - heartbeat_due_at_not_overdue
     - material_delta_since_last_heartbeat
     - user_questions_are_in_Questions_with_question_first
@@ -43,10 +43,10 @@ Audit the system around the work:
 
 - stale leases;
 - orphaned in-progress tasks;
-- missing or generic Codex thread titles;
-- `source_thread_id` used as a worker/reviewer/verifier/watchdog/auditor thread id;
-- task lease, thread registry, and control record divergence;
-- subagent runs mislabeled as real Codex thread workers;
+- missing or generic Paperclip issue titles or agent names;
+- provider session ids used as worker/reviewer/verifier/watchdog/auditor owners;
+- issue lease, checkout/run registry, and control record divergence;
+- subagent runs mislabeled as real Paperclip agent runs;
 - expired blockers;
 - weak evidence;
 - tasks closed without verification;
@@ -86,8 +86,8 @@ Record tool degradation instead of hiding it. If a watchdog or auditor cannot us
 System health:
 Top bottlenecks:
 Orphaned work:
-Thread title/identity issues:
-Lease registry/control divergence:
+Agent/run identity issues:
+Issue checkout/live-run/control divergence:
 Repeated blockers:
 Weak evidence patterns:
 Authority risks:

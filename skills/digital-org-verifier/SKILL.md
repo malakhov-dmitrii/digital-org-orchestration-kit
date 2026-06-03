@@ -21,11 +21,11 @@ grounding:
 
 ```yaml
 verification_checklist:
-  - confirm_worker_reviewer_verifier_or_auditor_is_a_codex_thread_when_it_claims_durable_ownership
-  - confirm_role_thread_title_matches_task_id_role_scope
+  - confirm_worker_reviewer_verifier_or_auditor_is_a_paperclip_agent_run_when_it_claims_durable_ownership
+  - confirm_role_agent_name_and_issue_title_match_task_id_role_scope
   - confirm_project_prefix_is_max_3_chars_and_embedded_in_task_id
-  - confirm_source_thread_id_is_not_used_as_role_thread_or_lease_holder
-  - confirm_holder_thread_id_equals_current_thread_id_when_lease_active
+  - confirm_provider_session_id_is_not_used_as_role_owner_or_lease_holder
+  - confirm_active_lease_matches_paperclip_checkout_or_live_run
   - classify_subagent_output_as_secondary_not_canonical
   - read_task_goal_scope_acceptance_criteria_evidence_requirements_authority_and_known_gaps
   - read_worker_claim_and_provided_evidence
@@ -33,8 +33,8 @@ verification_checklist:
   - map_each_acceptance_criterion_to_evidence
   - independently_inspect_or_rerun_the_smallest_needed_proof
   - decide_accepted_needs_fix_or_blocked
-  - check_linear_reconciliation_rules
-  - check_task_lease_thread_registry_and_control_record_are_consistent
+  - check_paperclip_native_reconciliation_rules
+  - check_issue_checkout_live_run_agent_registry_and_control_record_are_consistent
   - check_degraded_tool_fallbacks_are_recorded_when_used
 ```
 
@@ -48,12 +48,12 @@ close_rules:
     - uat_passed_or_not_required
     - no_active_lease_without_handoff
     - runtime_state_restored_or_documented
-    - linear_reconciliation_rules_pass
-    - thread_registry_control_task_lease_consistent
+    - paperclip_native_reconciliation_rules_pass
+    - issue_checkout_live_run_agent_registry_consistent
   reject_if:
-    - subagent_run_reported_as_real_codex_thread_pilot
-    - source_thread_id_used_as_current_role_thread
-    - role_thread_title_missing_or_generic
+    - subagent_run_reported_as_real_paperclip_agent_run
+    - provider_session_used_as_durable_role_owner
+    - role_agent_name_or_issue_title_missing_or_generic
     - active_lease_held_by_subagent
     - questions_contains_peer_runtime_or_stale_primary_blocker
     - deferred_has_active_lease
