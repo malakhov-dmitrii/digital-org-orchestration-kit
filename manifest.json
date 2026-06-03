@@ -1,0 +1,69 @@
+{
+  "schema_version": "digital-org-kit/v0.1",
+  "generated_at": "2026-06-03T13:07:35+02:00",
+  "primary_task_pool": "Linear",
+  "fallback_task_pool": "local_task_board",
+  "organizational_agent_surface": "Codex_thread",
+  "subagent_surface": "secondary_internal_tool",
+  "docs": [
+    "docs/portable-project-activation-kit-v0.1.md",
+    "docs/thread-first-project-workflow-v0.1.md",
+    "docs/project-onboarding-discovery-kickoff-v0.1.md",
+    "docs/project-setup-and-linear-template-v0.1.md",
+    "docs/templates-and-checklists-v0.1.md",
+    "docs/control-loops-heartbeats-watchdogs-v0.1.md",
+    "docs/thread-naming-convention-v0.1.md",
+    "docs/org-operating-model-v0.1.md",
+    "docs/canonical-task-schema-and-stage-machine-v0.1.md",
+    "docs/linear-reconciliation-rules-v0.1.md",
+    "docs/authority-and-evidence-contracts-v0.1.md",
+    "docs/linear-adapter-spec-v0.1.md",
+    "docs/fallback-board-spec-v0.1.md",
+    "docs/gastown-pattern-implementation-roadmap-v0.1.md",
+    "docs/no-magic-review-portable-kit-v0.1.md",
+    "docs/domain-pack-orgops-v0.1.md",
+    "docs/domain-pack-development-v0.1.md"
+  ],
+  "skills": [
+    "skills/digital-org-project-activation/SKILL.md",
+    "skills/digital-org-orchestrator/SKILL.md",
+    "skills/digital-org-worker/SKILL.md",
+    "skills/digital-org-reviewer/SKILL.md",
+    "skills/digital-org-verifier/SKILL.md",
+    "skills/digital-org-auditor/SKILL.md",
+    "skills/digital-org-domain-orgops/SKILL.md",
+    "skills/digital-org-domain-development/SKILL.md"
+  ],
+  "validators": [
+    "validators/validate-kit.mjs"
+  ],
+  "templates": [
+    "templates/control-issue.md",
+    "templates/task-issue.md",
+    "templates/fallback-task-board.yaml",
+    "templates/worker-kickoff.md",
+    "templates/reviewer-kickoff.md",
+    "templates/verifier-kickoff.md",
+    "templates/auditor-kickoff.md",
+    "templates/final-report.md",
+    "templates/watchdog-digest.md",
+    "templates/audit-improvement-proposal.md"
+  ],
+  "scripts": [
+    "scripts/install-skills.mjs"
+  ],
+  "examples": [
+    "examples/tutorial-pilot/README.md",
+    "examples/tutorial-pilot/pilot-report.md",
+    "examples/tutorial-pilot/audit/post-pilot-system-audit.md",
+    "examples/tutorial-pilot/.org/tasks.yaml",
+    "examples/tutorial-pilot/.org/control.md"
+  ],
+  "fixtures": [],
+  "open_gates": {
+    "real_codex_thread_pilot": "completed_local_synthetic",
+    "linear_project_update_backend": "degraded_or_ui_only",
+    "memory_hygiene_spec": "not_completed",
+    "publication_sanitized": "yes"
+  }
+}

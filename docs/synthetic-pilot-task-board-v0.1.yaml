@@ -1,0 +1,256 @@
+schema_version: digital-org-task-pool/v0.1
+canonical_surface: fallback_yaml
+pilot_mode: synthetic_dry_run
+linear_project_id: null
+organization:
+  id: digital-org
+  name: Digital Organization
+projects:
+  - id: project-synthetic-tutorial
+    name: Digital Org Synthetic Tutorial
+    autonomy_profile: local_execution
+    canonical_surface: fallback_yaml
+    kill_switch_state: active
+    source_of_truth:
+      current_work: outputs/synthetic-pilot-task-board-v0.1.yaml
+      specs:
+        - outputs/org-operating-model-v0.1.md
+        - outputs/canonical-task-schema-and-stage-machine-v0.1.md
+        - outputs/control-plane-policies-and-synthetic-pilot-v0.1.md
+        - outputs/portable-skill-specs-v0.1.md
+      memory: historical_context_only
+      runtime_evidence: none
+    digest_delivery:
+      - chat
+      - linear_project_update_when_adapter_enabled
+tasks:
+  - id: SYN-001
+    title: Define tutorial goal and acceptance criteria
+    goal_id: GOAL-SYN-001
+    project_id: project-synthetic-tutorial
+    workstream_id: workstream-tutorial
+    domain: orgops
+    role_lane: project_orchestrator
+    stage: intake
+    status: ready
+    priority: p1
+    risk: low
+    summary:
+      goal: Define synthetic tutorial project goal and acceptance criteria.
+      acceptance_criteria:
+        - Goal is concrete.
+        - UAT state is defined.
+      out_of_scope:
+        - Real Linear issue creation.
+        - Real worker threads.
+    owner:
+      agent_id: leader
+      thread_id: current-thread
+      role: chief_orchestrator
+      domain_pack: orgops
+    lease:
+      state: none
+    authority:
+      profile: local_execution
+      grants:
+        read_context: true
+        edit_local_files: true
+        run_tests_or_checks: true
+        public_action: false
+        spend_money: false
+        deploy_prod: false
+        mutate_db: false
+    blockers: []
+    evidence:
+      required:
+        - kind: artifact
+          description: Tutorial goal record.
+      provided: []
+    review:
+      state: not_requested
+    qa:
+      state: not_required
+    verification:
+      state: not_requested
+    uat:
+      state: not_requested
+    handoff:
+      next_action: Move to context loading.
+      known_gaps: []
+    archive:
+      state: open
+  - id: SYN-002
+    title: Build source-of-truth map
+    goal_id: GOAL-SYN-001
+    project_id: project-synthetic-tutorial
+    workstream_id: workstream-tutorial
+    domain: orgops
+    role_lane: worker
+    stage: context_loading
+    status: ready
+    priority: p1
+    risk: low
+    summary:
+      goal: Map specs, skills, task board, memory, and runtime evidence sources.
+      acceptance_criteria:
+        - Source types are listed.
+        - Current truth and historical memory are separated.
+      out_of_scope:
+        - Reading full unrelated chats.
+    owner:
+      agent_id: unassigned
+      thread_id: null
+      role: worker
+      domain_pack: orgops
+    lease:
+      state: none
+    authority:
+      profile: local_execution
+      grants:
+        read_context: true
+        edit_local_files: true
+        run_tests_or_checks: true
+    blockers: []
+    evidence:
+      required:
+        - kind: artifact
+          description: Source-of-truth map.
+      provided: []
+    review:
+      state: not_requested
+    qa:
+      state: not_required
+    verification:
+      state: not_requested
+    uat:
+      state: not_requested
+    handoff:
+      next_action: Assign lease for context map worker.
+      known_gaps: []
+    archive:
+      state: open
+  - id: SYN-003
+    title: Demonstrate blocker routing
+    goal_id: GOAL-SYN-001
+    project_id: project-synthetic-tutorial
+    workstream_id: workstream-tutorial
+    domain: orgops
+    role_lane: worker
+    stage: execution
+    status: blocked
+    priority: p1
+    risk: low
+    summary:
+      goal: Simulate one user-question blocker and one peer blocker.
+      acceptance_criteria:
+        - Blocker owner is explicit.
+        - Next unblock action is explicit.
+      out_of_scope:
+        - Real user interruption.
+    owner:
+      agent_id: simulated-worker
+      thread_id: dry-run
+      role: worker
+      domain_pack: orgops
+    lease:
+      state: active
+      holder_agent_id: simulated-worker
+      holder_thread_id: dry-run
+      scope: synthetic blocker example
+      started_at: "2026-06-02T00:00:00+02:00"
+      expires_at: "2026-06-02T02:00:00+02:00"
+      heartbeat_due_at: "2026-06-02T00:30:00+02:00"
+      stale_policy: recover_to_orchestrator
+    authority:
+      profile: local_execution
+      grants:
+        read_context: true
+        edit_local_files: true
+        run_tests_or_checks: true
+        public_action: false
+    blockers:
+      - id: BLK-SYN-001
+        type: blocked_user
+        state: open
+        owner: user
+        reason: Synthetic UAT acceptance requires user decision.
+        unblock_condition: User accepts or rejects tutorial dry-run result.
+    evidence:
+      required:
+        - kind: artifact
+          description: Blocker record.
+      provided: []
+    review:
+      state: not_requested
+    qa:
+      state: not_required
+    verification:
+      state: not_requested
+    uat:
+      state: requested
+    handoff:
+      next_action: Resolve blocker in dry-run walkthrough.
+      known_gaps: []
+    archive:
+      state: open
+  - id: SYN-004
+    title: Review and verify synthetic task
+    goal_id: GOAL-SYN-001
+    project_id: project-synthetic-tutorial
+    workstream_id: workstream-tutorial
+    domain: orgops
+    role_lane: verifier
+    stage: verification
+    status: ready_for_verification
+    priority: p1
+    risk: low
+    summary:
+      goal: Verify dry-run evidence against acceptance criteria.
+      acceptance_criteria:
+        - Evidence maps to each acceptance criterion.
+        - Known gaps are explicit.
+      out_of_scope:
+        - Real runtime proof.
+    owner:
+      agent_id: simulated-verifier
+      thread_id: dry-run
+      role: verifier
+      domain_pack: orgops
+    lease:
+      state: none
+    authority:
+      profile: local_execution
+      grants:
+        read_context: true
+        run_tests_or_checks: true
+        close_task: true
+    blockers: []
+    evidence:
+      required:
+        - kind: verifier_check
+          description: Verification record.
+      provided: []
+    review:
+      state: passed
+    qa:
+      state: passed
+    verification:
+      state: requested
+      verifier_agent_id: simulated-verifier
+    uat:
+      state: not_requested
+    handoff:
+      next_action: Produce verification record.
+      known_gaps: []
+    archive:
+      state: open
+agents:
+  - id: leader
+    role: chief_orchestrator
+    state: active
+  - id: simulated-worker
+    role: worker
+    state: simulated
+  - id: simulated-verifier
+    role: verifier
+    state: simulated

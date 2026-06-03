@@ -1,0 +1,24 @@
+schema_version: digital-org-task-board/v0.1
+project:
+  slug:
+  name:
+  goal:
+  activation_mode:
+  authority_profile:
+source_of_truth:
+  task_state: this_file
+  user_goal:
+  repo_state:
+  runtime_state:
+  digest:
+thread_registry: []
+capacity_governor:
+  max_active_worker_threads: 1
+  increase_requires:
+    - thread_registry
+    - lease_ttl_scan
+    - orphan_detection
+    - digest_surface
+kill_switch:
+  state: inactive
+tasks: []

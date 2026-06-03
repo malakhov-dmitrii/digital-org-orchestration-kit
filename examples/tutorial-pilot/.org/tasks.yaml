@@ -1,0 +1,177 @@
+schema_version: digital-org-task-board/v0.1
+project:
+  slug: digital-org-tutorial-pilot
+  name: Digital Org Tutorial Pilot
+  goal: prove_thread_first_orchestration_on_safe_synthetic_work
+  activation_mode: quick_start_30_min
+  authority_profile: local_files_only
+source_of_truth:
+  task_state: .org/tasks.yaml
+  control_record: .org/control.md
+  source_facts: source/customer-notes.md
+  deliverable: deliverables/tutorial-release-note.md
+thread_registry:
+  - role: worker
+    thread_id: thread-tut-worker-001
+    thread_title: DOP-TUT TUT-001 Worker release note
+    project_prefix: DOP-TUT
+    task_id: TUT-001
+    lease_state: released
+    heartbeat_due_at:
+    notes: handed_off_ready_for_review_at_2026-06-03T10:54:03Z
+  - role: watchdog
+    thread_id: thread-tut-watchdog-004
+    thread_title: DOP-TUT TUT-004 Watchdog scan
+    project_prefix: DOP-TUT
+    task_id: TUT-004
+    lease_state: released
+    heartbeat_due_at:
+    notes: watchdog_digest_complete_released_by_orchestrator
+  - role: reviewer
+    thread_id: thread-tut-reviewer-002
+    thread_title: DOP-TUT TUT-002 Reviewer release note
+    project_prefix: DOP-TUT
+    task_id: TUT-002
+    lease_state: released
+    heartbeat_due_at:
+    notes: review_pass_ready_for_verification_at_2026-06-03T10:55:42Z
+  - role: verifier
+    thread_id: thread-tut-verifier-003
+    thread_title: DOP-TUT TUT-003 Verifier pilot claims
+    project_prefix: DOP-TUT
+    task_id: TUT-003
+    lease_state: released
+    heartbeat_due_at:
+    notes: verification_complete_released_by_orchestrator
+  - role: auditor
+    thread_id: thread-tut-auditor-005
+    thread_title: DOP-TUT TUT-005 Auditor retrospective
+    project_prefix: DOP-TUT
+    task_id: TUT-005
+    lease_state: released
+    heartbeat_due_at:
+    notes: retrospective_audit_complete
+capacity_governor:
+  max_active_worker_threads: 1
+  increase_requires:
+    - thread_registry
+    - lease_ttl_scan
+    - orphan_detection
+    - digest_surface
+kill_switch:
+  state: inactive
+tasks:
+  - id: TUT-001
+    title: Create grounded tutorial release note
+    role: worker
+    canonical_stage: worker_handoff
+    canonical_status: Done
+    scope:
+      - source/customer-notes.md
+      - deliverables/tutorial-release-note.md
+      - evidence/TUT-001-worker-evidence.md
+    out_of_scope:
+      - Linear writes
+      - public actions
+      - runtime actions
+      - files outside examples/tutorial-pilot
+    lease:
+      state: released
+      holder_thread_id: thread-tut-worker-001
+      started_at: 2026-06-03T10:51:17Z
+      released_at: 2026-06-03T10:54:03Z
+      expires_at:
+      heartbeat_due_at:
+    acceptance:
+      - deliverable uses only source/customer-notes.md facts
+      - deliverable is concise and internal-beta appropriate
+      - evidence lists changed files and checks
+      - handoff says ready_for_review
+    blockers: []
+    evidence:
+      - evidence/TUT-001-worker-evidence.md
+    handoff: reviewed_verified_complete
+  - id: TUT-002
+    title: Review TUT-001 output
+    role: reviewer
+    canonical_stage: review_handoff
+    canonical_status: Done
+    blocked_by: []
+    lease:
+      state: released
+      holder_thread_id: thread-tut-reviewer-002
+      started_at: 2026-06-03T10:54:03Z
+      released_at: 2026-06-03T10:55:42Z
+      expires_at:
+      heartbeat_due_at:
+    acceptance:
+      - review checks scope, quality, source grounding, and missing evidence
+      - review writes evidence/TUT-002-review.md
+    verdict: pass
+    evidence:
+      - evidence/TUT-002-review.md
+    handoff: ready_for_verification
+  - id: TUT-003
+    title: Verify tutorial pilot claims
+    role: verifier
+    canonical_stage: verification
+    canonical_status: Done
+    blocked_by: []
+    lease:
+      state: released
+      holder_thread_id: thread-tut-verifier-003
+      started_at: 2026-06-03T10:57:29Z
+      released_at: 2026-06-03T11:00:19Z
+      expires_at:
+      heartbeat_due_at:
+    acceptance:
+      - verifier checks task board, deliverable, review, and evidence
+      - verifier writes evidence/TUT-003-verification.md
+    evidence:
+      - evidence/TUT-003-verification.md
+    verdict: pass
+    handoff: verification_complete
+  - id: TUT-004
+    title: Watchdog scan
+    role: watchdog
+    canonical_stage: watchdog_scan
+    canonical_status: Done
+    lease:
+      state: released
+      holder_thread_id: thread-tut-watchdog-004
+      started_at: 2026-06-03T10:51:17Z
+      released_at: 2026-06-03T10:54:03Z
+      expires_at:
+      heartbeat_due_at:
+    acceptance:
+      - scan active tasks, active threads, stale leases, orphaned tasks, loop risk
+      - write watchdog/watchdog-digest.md
+    evidence:
+      - watchdog/watchdog-digest.md
+    handoff: watchdog_digest_complete
+  - id: TUT-005
+    title: Retrospective audit
+    role: auditor
+    canonical_stage: retrospective_audit
+    canonical_status: Done
+    blocked_by: []
+    lease:
+      state: released
+      holder_thread_id: thread-tut-auditor-005
+      started_at: 2026-06-03T11:01:18Z
+      released_at: 2026-06-03T11:04:00Z
+      expires_at: 2026-06-03T11:31:18Z
+      heartbeat_due_at:
+    acceptance:
+      - write audit/retrospective-audit.md
+      - propose process, skill, template, or validator improvements
+    findings:
+      - source_thread_id was ambiguous and was incorrectly treated as a child thread id before orchestrator correction
+      - child prompts must distinguish source_thread_id from holder_thread_id and current_thread_id
+      - role threads must not manage parent or orchestrator thread metadata
+      - verifier lease release was reconciled in the task entry but remained active in registry/control surfaces
+      - context-mode degraded on better-sqlite3 Node ABI mismatch and needed bounded direct-read fallback
+      - watchdog detection was useful for ready_for_review with active lease and should add registry/task divergence checks
+      - bounded-stop steering kept the pilot inside local files with no Linear, public, or runtime actions
+    handoff: retrospective_audit_complete
+    handoff_summary: revise tutorial prompt and registry templates for explicit child identity, atomic lease reconciliation, context-mode fallback, and required anti-slop/verification gates
