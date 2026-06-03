@@ -1,6 +1,6 @@
 ---
 name: digital-org-orchestrator
-description: "Use when managing a digital organization task pool across goals, projects, workstreams, stages, Linear-first durable state, leases, blockers, worker/reviewer/verifier assignment, digests, kill switch, UAT, and archival."
+description: "Use when managing a digital organization task pool across Paperclip-owned goals, projects, workstreams, stages, leases, blockers, worker/reviewer/verifier assignment, digests, kill switch, UAT, and archival."
 ---
 
 # Digital org orchestrator
@@ -9,9 +9,11 @@ description: "Use when managing a digital organization task pool across goals, p
 
 ```yaml
 operating_model:
-  primary_task_pool: Linear
+  primary_task_pool: Paperclip
+  optional_mirror_task_pool: Linear
   fallback_task_board: .org/tasks.yaml
   chat_is_durable_state: false
+  codex_is_runtime_provider: true
   write_task_state_to_task_pool: true
   memory_role: historical_context_and_reusable_lessons
   current_status_source: task_pool
@@ -19,44 +21,44 @@ operating_model:
   anti_slop_before_outward_text: true
 ```
 
-## thread naming
+## Paperclip naming
 
 ```yaml
-thread_title_required: true
+paperclip_agent_name_required: true
 title_pattern: "<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
 project_prefix_rule: max_3_chars_and_embedded_in_task_id
 examples:
-  - "TUT-001 Worker release note"
-  - "TUT-002 Reviewer release note"
-  - "TUT-004 Watchdog scan"
+  - "PCP-001 Worker release note"
+  - "PCP-002 Reviewer release note"
+  - "PCP-004 Watchdog scan"
 orchestrator_rule:
-  - rename_thread_before_or_immediately_after_assignment
-  - record_thread_title_in_registry
-  - do_not_assign_work_to_generic_or_untitled_role_thread
+  - create_or_select_paperclip_agent_before_assignment
+  - record_agent_id_name_role_and_reports_to
+  - do_not_assign_work_to_generic_or_unscoped_agent
 required_registry_fields:
-  - thread_id
-  - thread_title
+  - paperclip_agent_id
+  - paperclip_agent_name
   - project_prefix
   - task_id_or_scope
   - role
   - short_scope
 ```
 
-## thread identity
+## identity
 
 ```yaml
-thread_identity:
-  source_thread_id:
-    meaning: parent_or_orchestrator_provenance
+identity:
+  paperclip_agent_id:
+    meaning: durable_role_owner
+    may_hold_role_lease: true
+  paperclip_issue_id:
+    meaning: durable_task_record
+  paperclip_run_id:
+    meaning: execution_and_lease_instance
+  provider_session_id:
+    meaning: Codex_or_other_runtime_session
     may_hold_role_lease: false
-    child_may_manage_metadata: false
-  current_thread_id:
-    meaning: current_role_codex_thread
-    required_for_role_threads: true
-  holder_thread_id:
-    meaning: active_lease_holder
-    active_lease_rule: must_equal_current_thread_id
-  role_threads_may_rename_only_current_thread_id: true
+  active_lease_rule: must_equal_active_paperclip_checkout_or_live_run
 ```
 
 ## authority baseline
@@ -79,8 +81,9 @@ authority_baseline:
 ```yaml
 channels:
   chat: control_channel
-  linear: durable_task_state
-  linear_comments: local_task_input_or_agent_updates
+  paperclip: durable_task_state
+  paperclip_comments: local_task_input_or_agent_updates
+  linear: optional_mirror_or_external_status
 
 user_linear_prefixes:
   - "User Decision:"
@@ -105,9 +108,11 @@ provenance_rules:
 provenance_record:
   actor_type: user | agent | system
   actor_id:
-  source_thread_id:
+  paperclip_agent_id:
+  paperclip_run_id:
+  provider_session_id:
   requested_by:
-  authority_source: chat | linear_comment | autonomy_profile | system_policy
+  authority_source: chat | paperclip_comment | autonomy_profile | system_policy
   action_type:
   target:
   timestamp:
@@ -117,7 +122,7 @@ provenance_record:
 
 ```yaml
 linear_reconciliation:
-  organizational_agent_surface: Codex_thread
+  organizational_agent_surface: Paperclip_agent_run
   subagent_surface: internal_tool_call_inside_thread
   subagent_can_hold_lease: false
   subagent_can_be_runtime_owner: false
@@ -165,7 +170,7 @@ workflow:
   - identify_authority_grants
   - inspect_active_leases
   - inspect_watchdog_heartbeats
-  - inspect_thread_registry_titles_and_identity
+  - inspect_paperclip_agent_registry_and_identity
   - inspect_lease_registry_control_divergence
   - inspect_blockers
   - inspect_runtime_owners
@@ -173,17 +178,18 @@ workflow:
   - inspect_goal_drift_or_looping
   - move_tasks_through_stage_machine
   - assign_or_release_leases_when_scope_ttl_evidence_authority_are_explicit
-  - ensure_role_thread_title_before_assignment
+  - ensure_role_agent_exists_before_assignment
   - route_blockers_to_smallest_correct_owner
   - request_reviewer_or_verifier_passes
   - keep_compact_digests_current
   - request_watchdog_or_auditor_pass_when_liveness_or_goal_progress_is_unclear
   - archive_after_evidence_gaps_uat_worker_shutdown_recorded
 
-thread_first_rule:
-  real_worker_reviewer_verifier_or_auditor_requires_codex_thread: true
+paperclip_native_rule:
+  real_worker_reviewer_verifier_or_auditor_requires_paperclip_agent_run: true
+  codex_thread_is_provider_session_not_lease_owner: true
   subagent_assisted_pass_must_be_labeled_as_secondary: true
-  do_not_report_subagent_run_as_real_thread_pilot: true
+  do_not_report_subagent_run_as_real_paperclip_agent_run: true
 
 stage_machine:
   - intake
@@ -211,7 +217,7 @@ control_loops:
   watchdog_scan_required_during_active_work: true
   goal_drift_watchdog_required: true
   retrospective_auditor_after_task_or_milestone: true
-  lease_registry_control_reconciliation_required: true
+  paperclip_checkout_live_run_reconciliation_required: true
   stale_or_looping_policy:
     - detect_repeated_activity_without_material_delta
     - mark_blocked_stale_or_looping
@@ -229,7 +235,7 @@ degraded_tool_policy:
     - keep_evidence_honest_about_degraded_state
 
 bounded_stop_policy:
-  applies_to_role_threads: true
+  applies_to_role_runs: true
   on_repeated_loop_or_recoverable_tool_failure:
     - write_current_artifact_or_explicit_gap
     - update_task_pool

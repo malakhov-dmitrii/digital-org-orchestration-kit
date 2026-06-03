@@ -1,9 +1,17 @@
 # Thread naming convention v0.1
 
+Status: legacy fallback plus provider-session hygiene.
+
+In Paperclip-native mode, Paperclip issue ids and Paperclip agent names are the
+durable identity. Codex thread titles are useful for inspection, but they are not
+the source of truth for leases.
+
 ```yaml
 artifact_type: operating_rule
 applies_to:
   - Codex_thread
+  - Paperclip_agent_name
+  - Paperclip_issue_title
   - worker
   - reviewer
   - verifier
@@ -11,7 +19,32 @@ applies_to:
   - auditor
 ```
 
-## rule
+## Paperclip-native rule
+
+Paperclip issue ids and titles must include the short project prefix, max 3
+characters, inside the task id:
+
+```text
+<PREFIX>-<NUMBER> <ROLE_OR_SCOPE> <SHORT_SCOPE>
+```
+
+Examples:
+
+```text
+PCP-001 Worker deliverable
+PCP-002 Reviewer pass
+PCP-004 Watchdog digest
+```
+
+Paperclip agent names should include the same short project or company prefix:
+
+```text
+PCP Worker
+PCP Reviewer
+PCP Verifier
+```
+
+## Codex fallback rule
 
 Every organizational Codex thread must be titled before or immediately after assignment.
 

@@ -1,17 +1,24 @@
 # Thread-first project workflow v0.1
 
+Status: legacy fallback. Use
+`docs/paperclip-native-control-plane-workflow-v0.1.md` as the default workflow
+when Paperclip is available.
+
 ## 0. scope
 
 ```yaml
 artifact_type: operating_workflow
 applies_to: any_project_using_digital_org_orchestration
-primary_agent_surface: Codex_thread
+primary_agent_surface: Codex_thread_when_paperclip_unavailable
 secondary_agent_surface: Codex_subagent
-primary_task_pool: Linear
+primary_task_pool: Linear_or_fallback_board
 fallback_task_pool: local_task_board
 ```
 
 ## 1. invariant
+
+Paperclip-native mode supersedes this invariant. In Paperclip-native mode, a
+Codex thread is a provider session and cannot hold the durable lease.
 
 ```yaml
 thread_first_invariant:

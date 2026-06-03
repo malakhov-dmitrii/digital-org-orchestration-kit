@@ -4,6 +4,9 @@
 
 ```yaml
 specs:
+  paperclip_native_control_plane_workflow: outputs/paperclip-native-control-plane-workflow-v0.1.md
+  paperclip_native_pilot_readback: outputs/paperclip-native-pilot-readback-v0.1.md
+  paperclip_control_plane_integration: outputs/paperclip-control-plane-integration-brief-v0.1.md
   operating_model: outputs/org-operating-model-v0.1.md
   task_schema_stage_machine: outputs/canonical-task-schema-and-stage-machine-v0.1.md
   control_policies_synthetic_pilot: outputs/control-plane-policies-and-synthetic-pilot-v0.1.md
@@ -21,7 +24,6 @@ specs:
   linear_reconciliation_rules: outputs/linear-reconciliation-rules-v0.1.md
   gastown_inspiration_notes: outputs/gastown-inspiration-notes-v0.1.md
   gastown_pattern_implementation_roadmap: outputs/gastown-pattern-implementation-roadmap-v0.1.md
-  paperclip_control_plane_integration: outputs/paperclip-control-plane-integration-brief-v0.1.md
   no_magic_review_portable_kit: outputs/no-magic-review-portable-kit-v0.1.md
   domain_orgops: outputs/domain-pack-orgops-v0.1.md
   domain_development: outputs/domain-pack-development-v0.1.md
@@ -31,15 +33,13 @@ specs:
 
 ```yaml
 pilot:
+  paperclip_native_pilot_report: digital-org-orchestration-kit/examples/paperclip-native-pilot/pilot-report.md
+  paperclip_native_final_readback: omitted_from_public_export_raw_local_snapshot
   task_board: outputs/synthetic-pilot-task-board-v0.1.yaml
   dry_run_plan: outputs/synthetic-dry-run-pilot-v0.1.md
   dry_run_result: outputs/synthetic-dry-run-result-v0.1.md
-  linear_readback: outputs/linear-synthetic-pilot-readback-v0.1.md
-  linear_status_exercise: outputs/linear-synthetic-status-exercise-v0.1.md
-  subagent_assisted_validation_audit: outputs/subagent-assisted-validation-audit-v0.1.md
   real_codex_thread_pilot: digital-org-orchestration-kit/examples/tutorial-pilot/pilot-report.md
-  safe_runtime_validator: work/validate-kit.mjs
-  live_readback_snapshot: work/linear-sample-readback.json
+  linear_live_fixtures: omitted_from_public_export
 ```
 
 ## Installed Skills
@@ -60,6 +60,15 @@ installed_skills:
 
 ```yaml
 verification_completed:
+  paperclip_native_local_server_health: pass
+  paperclip_native_issue_run_readback: pass
+  paperclip_native_worker_review_verification_audit: pass
+  paperclip_native_watchdog_timer_evidence: pass_with_cancelled_timer_run
+  paperclip_native_user_question_blocker: pass
+  paperclip_native_no_live_runs_final: pass
+  paperclip_docs_anti_slop_audit: pass
+  paperclip_docs_anti_slop_check: pass
+  paperclip_docs_grounding_gate: manual_review_after_cli_flagged_normative_policy_text
   anti_slop_grounding_outputs: pass
   skill_quick_validate: pass
   synthetic_task_board_yaml_parse: pass
@@ -74,8 +83,7 @@ verification_completed:
   real_codex_thread_pilot_local_only: pass
   real_codex_thread_pilot_thread_titles: pass
   safe_local_runtime_validator: pass
-  live_linear_reconciliation_AI_36: pass
-  live_linear_reconciliation_AI_39: pass
+  live_linear_reconciliation_private_fixture: omitted_from_public_export
   project_reporting_surface: degraded_AI_33_control_issue_fallback
   centralized_portable_kit: pass
   gitom_sync: local_git_and_gbrain_sync_fallback_pass
@@ -85,6 +93,14 @@ verification_completed:
 
 ```yaml
 next_gates:
+  paperclip_native_control_plane:
+    requires:
+      - company_package_import_export
+      - version_aware_scheduler_endpoint_discovery
+      - provider_auth_preflight
+      - dependency_vs_review_relation_policy
+      - verifier_closure_authority_policy
+      - final_assignee_vs_lease_readback_policy
   thread_first_controls:
     requires:
       - structured_block_validator_before_workers_above_1
@@ -101,11 +117,4 @@ next_gates:
     requires:
       - cleanup_dedup_spec
       - milestone_update_policy
-  paperclip_adapter:
-    requires:
-      - local_paperclip_sandbox_capability_check
-      - codex_thread_identity_round_trip
-      - single_lease_atomic_checkout_proof
-      - evidence_review_verification_uat_round_trip
-      - dual_authority_audit_before_linear_sync
 ```

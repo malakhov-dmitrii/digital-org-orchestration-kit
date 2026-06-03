@@ -1,6 +1,6 @@
 ---
 name: digital-org-project-activation
-description: "Use when activating the digital-org/thread-first orchestration model in any new project, including onboarding, setup, discovery, research, kickoff, Linear or fallback task pool setup, source-of-truth map, thread registry, capacity policy, and first task slices."
+description: "Use when activating the digital-org orchestration model in any new project, including Paperclip-native setup, onboarding, discovery, research, kickoff, source-of-truth map, authority profile, capacity policy, and first task slices."
 ---
 
 # Digital org project activation
@@ -14,12 +14,13 @@ required_inputs:
   - project_name
   - user_goal
   - known_constraints
-  - primary_task_pool_or_fallback
+  - primary_control_plane_or_fallback
   - activation_mode
 optional_inputs:
   - autonomy_profile
   - authority_grants
   - existing_repo_or_runtime
+  - existing_paperclip_company_or_project
   - existing_linear_project_or_control_issue
   - project_prefix
 ```
@@ -46,6 +47,7 @@ missing_input_policy:
 workflow:
   - intake
   - setup
+  - paperclip_company_project_agent_setup
   - discovery
   - research
   - source_of_truth_map
@@ -53,7 +55,7 @@ workflow:
   - planning
   - no_magic_review
   - decomposition
-  - thread_registry
+  - paperclip_issue_and_agent_registry
   - first_lease_policy
   - watchdog_baseline
   - ready_for_worker_assignment
@@ -64,36 +66,52 @@ workflow:
 ```yaml
 activation_modes:
   quick_start_30_min:
-    max_worker_threads: 1
-    required_surface: control_issue_or_fallback_board
+    max_active_worker_runs: 1
+    required_surface: Paperclip_project_or_fallback_board
   standard_90_min:
-    max_worker_threads: 1
-    required_surface: Linear_project_or_control_issue
+    max_active_worker_runs: 1
+    required_surface: Paperclip_company_project
     unlock_to_3_requires_watchdog_pass: true
   full_program:
-    max_worker_threads_initial: 1
-    max_worker_threads_after_controls: 3
-    max_worker_threads_large_project_default: 6
+    max_worker_runs_initial: 1
+    max_worker_runs_after_controls: 3
+    max_worker_runs_large_project_default: 6
     requires_feature_or_unit_orchestrators: context_dependent
 ```
 
-## thread-first rules
+## Paperclip-native rules
 
 ```yaml
-thread_first:
-  organizational_agent_surface: Codex_thread
+paperclip_native:
+  primary_control_plane: Paperclip
+  organizational_agent_surface: Paperclip_agent_run
+  runtime_provider_surface: Codex_local
+  codex_chat_is_durable_state: false
+  paperclip_owns:
+    - company
+    - project
+    - agents
+    - issues
+    - checkouts
+    - heartbeat_runs
+    - scheduler_state
+    - comments_and_evidence
   subagent_surface: secondary_internal_tool
   subagent_can_hold_lease: false
   subagent_can_be_runtime_owner: false
   subagent_can_accept_uat: false
-  real_worker_requires_thread_id: true
-  role_thread_title_required: true
+  real_worker_requires_paperclip_agent_run: true
+  role_agent_name_required: true
   title_pattern: "<TASK_ID_OR_SCOPE> <ROLE> <SHORT_SCOPE>"
   project_prefix_max_chars: 3
   task_id_must_start_with_project_prefix: true
 ```
 
-Do not call a subagent run a worker, reviewer, verifier, or auditor pilot. Label it as a secondary validation pass.
+Do not call a subagent run a worker, reviewer, verifier, or auditor pilot. Label
+it as a secondary validation pass.
+
+In this kit, use `docs/thread-first-project-workflow-v0.1.md` only as a legacy
+fallback when Paperclip is unavailable.
 
 ## setup outputs
 
@@ -105,10 +123,12 @@ setup_outputs:
   - non_goals
   - authority_profile
   - source_of_truth_map
-  - task_pool_location
+  - paperclip_company_id
+  - paperclip_project_id
+  - paperclip_agent_ids
   - project_prefix
-  - thread_registry
-  - thread_title_convention
+  - issue_stage_policy
+  - role_agent_naming_convention
   - capacity_governor
   - kill_switch_policy
   - digest_surface
@@ -125,13 +145,14 @@ Map these surfaces before planning:
 ```yaml
 source_of_truth_map:
   user_goal: chat_or_approved_task_record
-  current_task_state: Linear_or_fallback_board
+  current_task_state: Paperclip_issues_and_runs
+  optional_external_status: Linear_readonly_or_mirror
   repo_state: git_worktree
   runtime_state: named_runtime_owner
   DB_state: authority_profile_gated
   public_actions: user_gated_by_default
   memory: historical_context_not_current_task_state
-  digest: Linear_project_update_or_control_issue_digest
+  digest: Paperclip_project_status_issue_or_comment
 ```
 
 ## no-magic gate
@@ -158,9 +179,9 @@ unknown_no_magic_field_policy:
 
 ```yaml
 first_worker_policy:
-  default_active_worker_threads: 1
+  default_active_worker_runs: 1
   increase_requires:
-    - thread_registry_exists
+    - paperclip_agent_registry_exists
     - lease_ttl_scan_exists
     - orphan_detection_exists
     - digest_surface_exists
@@ -178,8 +199,9 @@ Activation mode:
 Task pool:
 Authority profile:
 Source of truth:
-Thread registry:
-Thread title pattern:
+Paperclip company/project:
+Paperclip agents:
+Issue naming pattern:
 Capacity:
 First milestone:
 Ready tasks:

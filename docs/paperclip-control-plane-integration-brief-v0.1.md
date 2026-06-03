@@ -1,38 +1,33 @@
 # Paperclip control plane integration brief v0.1
 
-Status: decision brief, not an implementation commitment
+Status: accepted default after local synthetic pilot
 Date: 2026-06-03
 
-Grounding:
-
-- This kit's current task surfaces are declared in `manifest.json` as
-  `primary_task_pool: Linear` and `fallback_task_pool: local_task_board`.
-- This kit's current organizational agent surface is declared in `manifest.json`
-  as `organizational_agent_surface: Codex_thread`.
-- The adapter rules below are local acceptance criteria for this kit. They are
-  not claims about current Paperclip behavior.
+Grounding: this is a kit decision brief. Runtime evidence from the local pilot
+is summarized in `docs/paperclip-native-pilot-readback-v0.1.md`.
 
 ## Decision
 
-Treat this kit as a portable operating pack, not as a replacement for Paperclip.
+Use Paperclip as the primary control plane for this kit.
 
-The kit owns the role model, stage machine, lease discipline, evidence contract,
-review/verification/UAT gates, thread-first Codex ownership, and project
-activation workflow.
+Paperclip owns the durable organization state:
 
-The durable control plane can be swapped:
+- company and project boundaries;
+- role agents and reporting lines;
+- issues, statuses, blockers, and comments;
+- active checkouts and heartbeat runs;
+- scheduler/heartbeat state;
+- evidence, review, verification, UAT, and handoff records.
 
-- Linear, because this kit already declares it as the primary task pool;
-- local fallback task board, because this kit already ships that fallback;
-- Paperclip, only after a compatibility spike proves it can preserve this
-  kit's authority and evidence contracts.
+Codex is a runtime provider through `codex_local`. Codex chats, sessions, and
+subagents are not the source of truth for leases or task ownership in the
+Paperclip-native mode. They are execution logs and evidence pointers.
 
-Do not migrate the kit wholesale to Paperclip yet. Build a Paperclip adapter
-profile first, then decide whether Paperclip becomes a preferred control plane
-for projects that need a dashboard, org chart, scheduled heartbeats, budgets,
-and multi-company isolation.
+Linear remains useful as an optional mirror or external stakeholder surface.
+The fallback task-board file remains useful when Paperclip is unavailable.
+Neither should dual-write as canonical beside Paperclip.
 
-## Why Paperclip is close
+## Why Paperclip fits
 
 Paperclip describes itself as a Node.js server and React UI for managing teams
 of AI agents, with org charts, goals, budgets, governance, heartbeats, task
@@ -59,7 +54,7 @@ The company package spec says it defines a markdown- and GitHub-native format
 for companies, teams, agents, projects, tasks, and skills. This kit should
 evaluate that format during the Paperclip spike, but does not adopt it here.
 
-Primary references:
+Primary references used for the original evaluation:
 
 - https://github.com/paperclipai/paperclip/blob/master/README.md
 - https://github.com/paperclipai/paperclip/blob/master/doc/SPEC-implementation.md
@@ -70,25 +65,26 @@ Primary references:
 ## Architecture shape
 
 ```text
-Digital Org Operating Pack
-  roles, stages, leases, authority, evidence, UAT, reporting, skills
+Paperclip
+  company, project, org chart, agents, issues, checkouts,
+  heartbeat runs, scheduler, comments, blockers, evidence
         |
         v
-Control Plane Adapter
-  Linear adapter | fallback board adapter | Paperclip adapter candidate
+Digital Org Operating Pack
+  role prompts, stage machine, authority, evidence contract,
+  watchdog/auditor policy, onboarding, project activation
         |
         v
 Agent Runtime Adapter
-  Codex thread adapter | bounded subagent helper adapter
+  Codex local provider | other provider adapters | bounded helper subagents
         |
         v
 Knowledge / Memory Adapter
   GBrain, project docs, repo discovery, audit learnings
 ```
 
-Local policy for this kit: the operating pack stays vendor-neutral. The
-control-plane adapter stores and displays task state. The role contracts remain
-in this kit.
+Local policy: Paperclip stores current control-plane state. This kit supplies
+portable operating contracts, role instructions, templates, and validators.
 
 ## Source-of-truth map
 
@@ -97,25 +93,27 @@ in this kit.
 | Project goal | control plane project/company goal record | user or chief/project orchestrator after approval | user or approved orchestrator | agents optimize for different goals |
 | Task identity | control plane issue/task id | project orchestrator | project orchestrator | duplicate work or broken reporting |
 | Project prefix | task id prefix, max 3 chars | project orchestrator | user-approved orchestrator change only | unreadable thread/task nomenclature |
-| Role thread identity | Codex thread id and title stored on task/lease | assigning orchestrator | runtime owner or orchestrator | active work becomes untraceable |
-| Lease holder | task lease record | assigning orchestrator | current owner or recovery authority | two agents mutate same scope |
+| Role identity | Paperclip agent id, name, role, reports-to edge | project orchestrator | project orchestrator | active work becomes untraceable |
+| Runtime session identity | Paperclip heartbeat run and provider session metadata | Paperclip runtime adapter | Paperclip runtime adapter | run logs cannot be mapped back to tasks |
+| Lease holder | Paperclip checkout/heartbeat run record | Paperclip assignment or scheduler | current owner or recovery authority | two agents mutate same scope |
 | Stage/status | control plane task state | orchestrator or role owner | role owner within authority boundary | false progress or hidden blocker |
 | Evidence | task comments, artifacts, repo paths, verification notes | worker/reviewer/verifier | append-only preferred | unverifiable completion claims |
 | User question | task blocker field/comment pinned near top | role owner | user answers, orchestrator routes | user-blocked work looks idle |
 | Runtime authority | authority profile and runtime-owner field | user/project orchestrator | user or runtime owner | unsafe deploy/DB/public actions |
 | Memory learning | milestone/audit memory update | auditor or orchestrator | memory hygiene process | stale or duplicated organizational memory |
 
-## Paperclip adapter gate
+## Paperclip-native acceptance gate
 
-These are proposed acceptance criteria for this kit. They are not current-state
-claims about Paperclip.
+These are this kit's acceptance criteria for using Paperclip as the primary
+surface.
 
-1. A real Codex thread remains the durable role owner for orchestrators,
+1. A Paperclip agent/run remains the durable role owner for orchestrators,
    workers, reviewers, verifiers, watchdogs, and auditors.
-2. Subagents can help with bounded research or validation, but cannot hold a
+2. Codex and subagents can help with bounded execution, research, or validation,
+   but cannot hold a
    project lease, own runtime authority, or accept UAT.
-3. Every active task can be queried with task id, stage, lease owner, thread id,
-   thread title, TTL, blockers, evidence, reviewer, verifier, and UAT state.
+3. Every active task can be queried with task id, stage, checkout/run owner,
+   TTL policy, blockers, evidence, reviewer, verifier, and UAT state.
 4. One task has one active assignee/lease holder at a time.
 5. Stale lease detection can produce an orphan digest without reading every
    role chat.
@@ -129,9 +127,9 @@ claims about Paperclip.
 10. The final report can be generated from control-plane state plus evidence,
     not from memory of the current chat.
 
-## Recommended spike
+## Completed local spike
 
-Run a local Paperclip compatibility spike before changing the default workflow.
+The local synthetic spike ran against Paperclip `0.3.1` on 2026-06-03.
 
 ```yaml
 spike:
@@ -157,38 +155,45 @@ spike:
     PCP-008: write decision report
 ```
 
-Exit criteria for the proposed spike:
+Exit criteria covered by the local spike readback:
 
-- `PCP-*` task ids remain readable and include the project prefix.
-- Active work can be inspected from Paperclip without opening every Codex
-  thread.
-- A stopped worker can be detected and recovered.
-- A user-question task shows the question at the top of the task surface.
-- Evidence, review, verification, and UAT are separable states.
+- `PCP-*` task ids remained readable and included the project prefix.
+- Active work was inspected from Paperclip without opening every Codex
+  chat.
+- A user-question task showed the question at the top of the task surface.
+- Evidence, review, verification, and UAT were represented as separable states.
 - No public/deploy/DB action can happen without the authority profile allowing
   it.
-- The final report identifies which facts came from Paperclip, Codex threads,
+- The final report identifies which facts came from Paperclip runs,
   files, Linear, or manual user input.
+
+The detailed readback is in `docs/paperclip-native-pilot-readback-v0.1.md`.
 
 ## No-magic review
 
-Verdict: needs spike before migration.
+Verdict: ready for sandboxed project activation, with documented control-plane
+gaps.
 
 Top blockers:
 
-- Paperclip's roadmap describes priorities as directional, so docs and runtime
-  behavior must be checked against the installed version.
-- The plugin spec explicitly lists current deployment and trust-model caveats:
-  trusted same-origin plugin UI, self-hosted filesystem-persistent practical
-  deployment, and no cloud-ready dynamic plugin distribution yet.
-- The current kit has proven local tutorial artifacts; Paperclip compatibility
-  has not yet been proven with real Codex role threads.
-- Dual-writing to Linear and Paperclip would create split authority unless one
-  system is declared read-only or derived.
+- Scheduler API paths must be discovered from the installed Paperclip version;
+  hardcoded `/api/scheduler-heartbeats` and company-scoped scheduler paths failed
+  in the pilot, while `/api/instance/scheduler-heartbeats` worked.
+- Agent instructions must use provider-injected API auth. A run without
+  `PAPERCLIP_AGENT_JWT_SECRET` produced board-authored comments and automation
+  loops.
+- In the local pilot, `blockedByIssueIds` behaved as a hard dependency rather
+  than a review-target relation.
+  Review tasks should link to the worker artifact without blocking on a
+  non-`done` worker issue when the review is supposed to perform the transition.
+- Finished issues can still show assignee fields. Lease status must be derived
+  from active checkout/run state, not assignee alone.
+- Dual-writing to Linear and Paperclip creates split authority unless one system
+  is declared read-only or derived.
 
 Stale-data risks:
 
-- Control-plane task state can drift from live Codex thread state.
+- Control-plane task state can drift from provider session metadata.
 - Heartbeat records can look healthy while the task is not moving toward the
   goal.
 - Memory updates can preserve obsolete process decisions.
@@ -196,12 +201,13 @@ Stale-data risks:
 Required degraded states:
 
 - `control_plane_unverified`;
-- `thread_owner_missing`;
+- `paperclip_agent_owner_missing`;
 - `lease_stale`;
 - `evidence_missing`;
 - `dual_authority_risk`;
 - `plugin_runtime_untrusted`;
-- `paperclip_adapter_experimental`.
+- `provider_session_unmapped`.
 
-Implementation may start only as a sandboxed adapter spike. A full migration
-should wait until the spike report proves the adapter contract.
+Implementation may start as a Paperclip-native project activation. Public,
+production, DB, spending, and external communication actions still require the
+authority profile to grant them explicitly.
